@@ -14,13 +14,13 @@ class CheckProgressResponse(BaseModel):
     result: str | None
 
 @router.get("/calculate_pi", response_model=CalculatePiResponse)
-def calculate_pi_endpoint(n: int = Query(..., ge=0, description="Number of decimal digits to calculate:")):
+def calculate_pi_endpoint(n: int = Query(..., ge=0, description="Number of decimal digits to calculate:")) -> CalculatePiResponse:
     """Starts asynchronous Celery task to compute π (pi)."""
     task = compute_pi.delay(n)
     return CalculatePiResponse(task_id=task.id)
 
 @router.get("/check_progress", response_model=CheckProgressResponse)
-def check_progress(task_id: str = Query(..., min_length=36, max_length=36, description="Celery task ID:")):
+def check_progress(task_id: str = Query(..., min_length=36, max_length=36, description="Celery task ID:")) -> CheckProgressResponse:
     """Check progress and result of a given Celery task."""
     task = compute_pi.AsyncResult(task_id)
     info = task.info or {}
