@@ -21,8 +21,11 @@ def calculate_pi(
             - progress (0.0 to 1.0)
             - computed Pi (None until finished)
     """
-    if n_digits <= 0:
+    if n_digits < 0:
         raise ValueError("Number of digits must be greater than 0.")
+    if n_digits == 0:
+        yield 1.0, "3"
+        return
 
     getcontext().prec = n_digits + 10  # extra digits for intermediate precision
 
@@ -37,8 +40,7 @@ def calculate_pi(
         current_term = Decimal(numerator) / Decimal(denominator)
         pi_series_sum += current_term
 
-        
-        progress = min(term_index / total_terms_estimate, 1.0)
+        progress = round(min(term_index / total_terms_estimate, 1.0), 2)
         yield progress, None
 
         term_index += 1
