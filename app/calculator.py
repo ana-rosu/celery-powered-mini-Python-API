@@ -14,7 +14,7 @@ def calculate_pi(
     Compute Pi using the Chudnovsky series with per-term progress reporting.
 
     Args:
-        n_digits: Number of decimal digits of Pi to compute (must be > 0)
+        n_digits: Number of decimal digits of Pi to compute (must be >= 0)
 
     Yields:
         Tuple[float, Optional[str]]:
@@ -22,7 +22,8 @@ def calculate_pi(
             - computed Pi (None until finished)
     """
     if n_digits < 0:
-        raise ValueError("Number of digits must be greater than 0.")
+        raise ValueError("Number of digits must be greater than or equal to 0.")
+    
     if n_digits == 0:
         yield 1.0, "3"
         return
