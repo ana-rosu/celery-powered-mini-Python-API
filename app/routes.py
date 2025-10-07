@@ -32,12 +32,19 @@ def check_progress(task_id: str = Query(..., min_length=36, max_length=36, descr
         return CheckProgressResponse(
             state=APIState.PROGRESS,
             progress=info.get("progress", 0.0),
-            result=info.get("result"))
-    
+            result=None
+        )
+
     if task.state == CeleryState.SUCCESS:
         return CheckProgressResponse(
             state=APIState.FINISHED,
-            progress=info.get("progress", 1.0),
+            progress=1.0,
             result=info.get("result"),
+        )
+    
+    if task.state == CeleryState.FAILURE:
+        raise HTTPException(
+            status_code=500,
+            detail=str(info) if info else "Task failed unexpectedly"
         )
     raise HTTPException(status_code=500, detail=f"Unexpected task state: {task.state}")

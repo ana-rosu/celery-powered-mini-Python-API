@@ -10,3 +10,4 @@ class CeleryState(str, Enum):
     PENDING = "PENDING"
     PROGRESS = "PROGRESS"
     SUCCESS = "SUCCESS"
+    FAILURE = "FAILURE"

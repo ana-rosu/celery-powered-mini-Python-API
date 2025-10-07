@@ -17,6 +17,6 @@ def compute_pi(self: Task, n: int) -> Dict[str, Any]:
     """Celery task to compute pi asynchronously with progress tracking."""
     result = None
     for progress, value in calculate_pi(n):
-        self.update_state(state=CeleryState.PROGRESS.value, meta={'progress': progress, 'result': None})
+        self.update_state(state=CeleryState.PROGRESS.value, meta={'progress': progress})
         result = value
-    return {'progress': 1.0, 'result': result}
+    return {'result': result}
